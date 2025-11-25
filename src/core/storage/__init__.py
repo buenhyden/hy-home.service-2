@@ -1,0 +1,1 @@
+from src.core.storage.minio_storage import MinioStorage

@@ -103,6 +103,17 @@ class Settings(BaseSettings):
                 return [i.strip() for i in v.split(",") if i.strip()]
         return v
 
+    # MinIO / S3 Config
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
+    AWS_REGION: str
+    AWS_ENDPOINT_URL: str
+    AWS_BUCKET_NAME: str
+
+    # [중요] 외부 서빙용 URL (Nginx 주소)
+    # docker-compose에서 http://localhost:80 으로 주입됨
+    PUBLIC_ASSET_URL: str
+
     # Pydantic V2 설정
     # .env 파일을 자동으로 읽어오며, 대소문자를 구분하지 않습니다.
     # extra='ignore': 정의되지 않은 환경변수가 있어도 에러를 내지 않습니다.

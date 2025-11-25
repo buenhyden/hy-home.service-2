@@ -12,3 +12,4 @@ class Video(Base):
     ai_summary = Column(Text)
 
     # 워커에서 필요하다면 추가 필드 정의 가능
+    ai_thumbnail = Column(String, nullable=True)
