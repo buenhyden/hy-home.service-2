@@ -1,0 +1,57 @@
+name: Backend CI
+on:
+  push:
+    branches:
+      - "main"
+      - "master"
+      - "develop"
+      - "release/**"
+      - "hotfix/**"
+    paths:
+      - "src/**"
+      - "tests/**"
+      - ".pre-commit-config.yaml"
+      - "Dockerfile"
+      - "docker-compose.test.yml"
+      - "docker-compose.yml"
+  pull_request:
+    branches:
+      - "main"
+      - "master"
+      - "develop"
+    paths:
+      - "src/**"
+      - "tests/**"
+      - ".pre-commit-config.yaml"
+      - "Dockerfile"
+      - "docker-compose.test.yml"
+      - "docker-compose.yml"
+jobs:
+  quality-and-test:
+    runs-on: ubuntu-latest
+    # services: postgres  <-- Removed, handled by docker-compose
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pre-commit
+        # 1. Pre-commit 캐싱 및 실행
+
+        run: pip install pre-commit
+      - name: Load cached pre-commit env
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
+      - name: Run pre-commit
+        run: pre-commit run --all-files --show-diff-on-failure
+      - name: Build Docker images
+        # 2. Docker Compose로 테스트 실행
+
+        run: docker compose -f docker-compose.test.yml build
+      - name: Run Tests via Docker Compose
+        run: docker compose -f docker-compose.test.yml run --rm test
