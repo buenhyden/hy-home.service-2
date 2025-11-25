@@ -61,6 +61,7 @@ class Settings(BaseSettings):
     # Kafka Ecosystem
     KAFKA_BROKERS: list[str] | str
     KAFKA_TOPIC_ANALYSIS: str
+    KAFKA_GROUP_ID: str
 
     KAFKA_CONNECT_URL: str | None
     SCHEMA_REGISTRY_URL: str | None
