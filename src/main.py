@@ -1,6 +1,6 @@
 import asyncio
 import json
-
+import logging
 from aiokafka import AIOKafkaConsumer
 
 # src 모듈 경로 인식 (필요시)
@@ -12,15 +12,15 @@ from src.services.video_analysis import VideoAnalysisService
 # ---------------------------------------------------------
 # Logging 설정
 # ---------------------------------------------------------
-app_logger = AppLogger(logger_name="worker.main")
-logger = app_logger.setup(
+app_logger = AppLogger()
+app_logger.setup(
     service_name=settings.PROJECT_NAME,
     loki_url=settings.LOKI_URL,
     enable_console=True,
     enable_file=True,
     enable_loki=False,
 )
-
+logger = logging.getLogger(__name__)
 
 async def consume():
     consumer = AIOKafkaConsumer(

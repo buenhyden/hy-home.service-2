@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Any
 
-import redis.asyncio as redis
+from redis.asyncio.cluster import RedisCluster
 
 from src.core.config import settings
 
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class CacheClient:
     _instance = None
-    redis_client: redis.Redis | None = None
+    redis_client: RedisCluster | None = None
 
     def __new__(cls):
         if cls._instance is None:
@@ -21,7 +21,7 @@ class CacheClient:
     async def start(self):
         """앱 시작 시 Redis 연결"""
         try:
-            self.redis_client = redis.from_url(
+            self.redis_client = RedisCluster.from_url(
                 settings.REDIS_URL, encoding="utf-8", decode_responses=True
             )
             # 연결 테스트
