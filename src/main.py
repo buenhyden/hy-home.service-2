@@ -1,6 +1,7 @@
 import asyncio
 import json
 import logging
+
 from aiokafka import AIOKafkaConsumer
 
 # src 모듈 경로 인식 (필요시)
@@ -21,6 +22,7 @@ app_logger.setup(
     enable_loki=False,
 )
 logger = logging.getLogger(__name__)
+
 
 async def consume():
     consumer = AIOKafkaConsumer(

@@ -29,63 +29,59 @@ class VideoAnalysisService:
         """DB 세션을 생성하는 헬퍼"""
         return session_local_write()
 
-    def update_status(self, status: str, summary: str = None):
+    def update_status(
+        self, status: str, summary: str = None, thumbnail_url: str = None, audio_url: str = None
+    ) -> str:
         """DB 세션을 짧게 열고 닫음"""
         db = self._get_db()
+        video_title = "Unknown Video"
         try:
             video = db.query(Video).filter(Video.id == self.video_id).first()
             if video:
                 video.analysis_status = status
                 if summary:
                     video.ai_summary = summary
-                db.commit()
-                db.refresh(video)
-                logger.info(f"Video {self.video_id} status updated to {status}")
-        except Exception as e:
-            db.rollback()
-            logger.error(f"Failed to update status: {e}")
-        finally:
-            db.close()  # [중요] 사용 후 즉시 닫음
 
-    async def complete_analysis(self, summary, thumbnail_url, audio_url):
-        db = self._get_db()
-        video_title = "Unknown Video"
-        try:
-            video = db.query(Video).filter(Video.id == self.video_id).first()
-            if video:
-                video.analysis_status = "completed"
-                video.ai_summary = summary
-                video_title = video.title
-
+                # 썸네일 업데이트 (Worker가 생성한 경우 AI 썸네일로 표시)
                 if thumbnail_url:
                     video.thumbnail = thumbnail_url
                     video.is_ai_thumbnail = True
 
+                # 오디오 URL 업데이트
                 if audio_url:
                     video.ai_audio = audio_url
 
                 db.commit()
-                logger.info(
-                    f"Analysis Completed. Thumb: {bool(thumbnail_url)}, Audio: {bool(audio_url)}"
-                )
+                db.refresh(video)
+                video_title = video.title
+                logger.info(f"Video {self.video_id} status updated to '{status}'")
         except Exception as e:
             db.rollback()
-            logger.error(f"DB Update failed: {e}")
+            logger.error(f"Failed to update status to {status}: {e}")
         finally:
             db.close()
 
-        # 알림 이벤트 발행
+        return video_title
+
+    async def finalize_analysis(
+        self, status: str, summary: str = None, thumbnail_url: str = None, audio_url: str = None
+    ):
+        # 1. DB Update (상태에 따라 업데이트)
+        video_title = self.update_status(status, summary, thumbnail_url, audio_url)
+
+        # 2. Notification Event (Kafka)
         try:
             notification_message = {
-                "event": "analysis_completed",
+                "event": f"analysis_{status}",  # analysis_completed 또는 analysis_failed
                 "video_id": self.video_id,
                 "title": video_title,
-                "status": "completed",
-                "summary_preview": summary[:100] + "..." if summary else "No summary",
+                "status": status,  # [수정] 하드코딩 제거 (변수 사용)
+                "summary_preview": summary[:100] + "..." if summary else "No summary available",
             }
-            # 설정된 토픽이 없으면 기본값 사용
+
             topic = getattr(settings, "KAFKA_TOPIC_NOTIFICATION", "video-notifications")
             await kafka_producer.send_message(topic, notification_message)
+            logger.info(f"Sent notification event for Video {self.video_id} (Status: {status})")
         except Exception as e:
             logger.error(f"Failed to send notification event: {e}")
 
@@ -144,7 +140,7 @@ class VideoAnalysisService:
     async def generate_image_description(self, base64_image: str) -> str:
         prompt = "Describe this image in detail."
         try:
-            async with httpx.AsyncClient(timeout=60.0) as client:
+            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
                 resp = await client.post(
                     f"{settings.OLLAMA_URL}/api/generate",
                     json={
@@ -174,10 +170,10 @@ class VideoAnalysisService:
         )
 
         try:
-            async with httpx.AsyncClient(timeout=120.0) as client:
+            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
                 resp = await client.post(
                     f"{settings.OLLAMA_URL}/api/generate",
-                    json={"model": "exaone3.5:latest", "prompt": prompt, "stream": False},
+                    json={"model": "exaone3.5:7.8b", "prompt": prompt, "stream": False},
                 )
                 if resp.status_code == 200:
                     return resp.json().get("response", "")
@@ -194,11 +190,11 @@ class VideoAnalysisService:
                 f"Based on the summary below, write a high-quality text-to-image prompt "
                 f"for a movie poster style thumbnail. Write ONLY the English prompt.\n\nSummary: {summary}"
             )
-            async with httpx.AsyncClient(timeout=60.0) as client:
+            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
                 resp = await client.post(
                     f"{settings.OLLAMA_URL}/api/generate",
                     json={
-                        "model": "exaone3.5:latest",
+                        "model": "exaone3.5:7.8b",
                         "prompt": prompt_instruction,
                         "stream": False,
                         "options": {"temperature": 0.7},
@@ -230,7 +226,7 @@ class VideoAnalysisService:
             # 1. Flux 모델 시도
             image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1280&height=720&model=flux&seed=42"
 
-            async with httpx.AsyncClient(timeout=45.0) as client:
+            async with httpx.AsyncClient(timeout=60.0, verify=False) as client:
                 resp = await client.get(image_url)
 
                 if resp.status_code != 200:
@@ -292,32 +288,42 @@ class VideoAnalysisService:
         url = db.query(Video.url).filter(Video.id == self.video_id).scalar()
         db.close()
         if not url:
-            self.update_status("failed")
+            self.finalize_analysis("failed")
             return
 
         try:
+            # 1. 프레임 추출
             frames = self.extract_keyframes(url)
             if not frames:
                 raise Exception("No frames extracted")
+
+            # 2. 이미지 설명 생성
             descs = []
             for frame in frames:
                 d = await self.generate_image_description(frame)
                 if d:
                     descs.append(d)
 
+            # 설명 생성 실패 시 조기 실패 처리
+            if not descs:
+                raise Exception("Failed to generate image descriptions")
+
+            # 3. 요약 생성
             summary = await self.summarize_descriptions(descs)
 
             if not summary or summary == "Failed":
                 raise Exception("Summary generation failed")
 
-            # 병렬 실행
+            # 4. 썸네일 & 오디오 생성 (병렬)
             ai_thumb_task = self.generate_and_upload_thumbnail(summary)
             ai_audio_task = self.generate_and_upload_audio(summary)
 
             ai_thumb_url, ai_audio_url = await asyncio.gather(ai_thumb_task, ai_audio_task)
 
-            await self.complete_analysis(summary, ai_thumb_url, ai_audio_url)
+            # 5. 최종 완료 처리 (성공)
+            await self.finalize_analysis("completed", summary, ai_thumb_url, ai_audio_url)
 
         except Exception as e:
             logger.error(f"Analysis failed: {e}")
-            self.update_status("failed")
+            # [수정] 예외 발생 시 'failed' 상태로 알림 발행 및 DB 업데이트
+            await self.finalize_analysis("failed")
