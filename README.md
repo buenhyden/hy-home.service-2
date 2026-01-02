@@ -71,14 +71,14 @@ cp .env.example .env
 
 ### 2. 로컬 실행
 
-Poetry를 사용하여 의존성을 설치하고 워커를 실행합니다.
+uv를 사용하여 의존성을 설치하고 워커를 실행합니다.
 
 ```bash
 # 의존성 설치
-poetry install
+uv sync
 
 # 워커 실행
-poetry run python src/main.py
+uv run python src/main.py
 ```
 
 ### 3. Docker 실행
@@ -95,10 +95,10 @@ docker-compose up --build
 
 ```bash
 # 테스트 실행
-pytest
+uv run pytest
 
 # 커버리지 확인
-pytest --cov=src
+uv run pytest --cov=src
 ```
 
 ---
