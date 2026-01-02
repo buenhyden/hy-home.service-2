@@ -30,7 +30,7 @@ class VideoAnalysisService:
         return session_local_write()
 
     def update_status(
-        self, status: str, summary: str = None, thumbnail_url: str = None, audio_url: str = None
+        self, status: str, summary: str | None = None, thumbnail_url: str | None = None, audio_url: str | None = None
     ) -> str:
         """DB 세션을 짧게 열고 닫음"""
         db = self._get_db()
@@ -64,7 +64,7 @@ class VideoAnalysisService:
         return video_title
 
     async def finalize_analysis(
-        self, status: str, summary: str = None, thumbnail_url: str = None, audio_url: str = None
+        self, status: str, summary: str | None = None, thumbnail_url: str | None = None, audio_url: str | None = None
     ):
         # 1. DB Update (상태에 따라 업데이트)
         video_title = self.update_status(status, summary, thumbnail_url, audio_url)
@@ -140,7 +140,7 @@ class VideoAnalysisService:
     async def generate_image_description(self, base64_image: str) -> str:
         prompt = "Describe this image in detail."
         try:
-            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
+            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:  # noqa: S501
                 resp = await client.post(
                     f"{settings.OLLAMA_URL}/api/generate",
                     json={
@@ -170,7 +170,7 @@ class VideoAnalysisService:
         )
 
         try:
-            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
+            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:  # noqa: S501
                 resp = await client.post(
                     f"{settings.OLLAMA_URL}/api/generate",
                     json={"model": "exaone3.5:7.8b", "prompt": prompt, "stream": False},
@@ -190,7 +190,7 @@ class VideoAnalysisService:
                 f"Based on the summary below, write a high-quality text-to-image prompt "
                 f"for a movie poster style thumbnail. Write ONLY the English prompt.\n\nSummary: {summary}"
             )
-            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:
+            async with httpx.AsyncClient(timeout=120.0, verify=False) as client:  # noqa: S501
                 resp = await client.post(
                     f"{settings.OLLAMA_URL}/api/generate",
                     json={
@@ -213,10 +213,7 @@ class VideoAnalysisService:
             return None
 
         clean_prompt = (
-            raw_prompt.replace("**", "")
-            .replace('"', "")
-            .replace("Movie Poster Thumbnail Prompt:", "")
-            .strip()
+            raw_prompt.replace("**", "").replace('"', "").replace("Movie Poster Thumbnail Prompt:", "").strip()
         )
 
         try:
@@ -224,9 +221,11 @@ class VideoAnalysisService:
 
             # [수정] 모델 Fallback 로직 추가
             # 1. Flux 모델 시도
-            image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1280&height=720&model=flux&seed=42"
+            image_url = (
+                f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1280&height=720&model=flux&seed=42"
+            )
 
-            async with httpx.AsyncClient(timeout=60.0, verify=False) as client:
+            async with httpx.AsyncClient(timeout=60.0, verify=False) as client:  # noqa: S501  # noqa: S501
                 resp = await client.get(image_url)
 
                 if resp.status_code != 200:
@@ -235,9 +234,7 @@ class VideoAnalysisService:
 
                 # Flux 실패 시 Turbo 모델로 재시도
                 if resp.status_code != 200:
-                    logger.warning(
-                        f"Flux model failed ({resp.status_code}). Retrying with Turbo model..."
-                    )
+                    logger.warning(f"Flux model failed ({resp.status_code}). Retrying with Turbo model...")
                     image_url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1280&height=720&model=turbo&seed=42"
                     resp = await client.get(image_url)
 
@@ -268,9 +265,7 @@ class VideoAnalysisService:
             audio_buffer.seek(0)
 
             filename = f"ai_audio_{self.video_id}_{uuid.uuid4().hex[:8]}.mp3"
-            s3_url = storage_client.upload_file(
-                audio_buffer, object_name=filename, content_type="audio/mpeg"
-            )
+            s3_url = storage_client.upload_file(audio_buffer, object_name=filename, content_type="audio/mpeg")
             logger.info(f"TTS Audio generated in memory: {s3_url}")
             return s3_url
         except Exception as e:

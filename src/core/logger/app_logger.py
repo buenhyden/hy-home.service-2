@@ -72,9 +72,7 @@ class AppLogger:
                     datefmt="%Y-%m-%d %H:%M:%S",
                 )
             except ImportError:
-                formatter = logging.Formatter(
-                    "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-                )
+                formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
             console_handler.setFormatter(formatter)
             console_handler.addFilter(trace_filter)  # ★ 여기 추가

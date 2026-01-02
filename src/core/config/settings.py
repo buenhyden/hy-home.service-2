@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    TOKEN_URL: str = "api/v1/auth/login"
+    TOKEN_URL: str = "api/v1/auth/login"  # noqa: S105
 
     # Admin
     ADMIN_USERNAME: str
@@ -41,15 +41,13 @@ class Settings(BaseSettings):
             # Write DB URL 조립
             if not self.SQLALCHEMY_DATABASE_WRITE_URL and self.DB_PORT_WRITE:
                 self.SQLALCHEMY_DATABASE_WRITE_URL = (
-                    f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@"
-                    f"{self.DB_HOST}:{self.DB_PORT_WRITE}/{self.DB_NAME}"
+                    f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT_WRITE}/{self.DB_NAME}"
                 )
 
             # Read DB URL 조립
             if not self.SQLALCHEMY_DATABASE_READ_URL and self.DB_PORT_READ:
                 self.SQLALCHEMY_DATABASE_READ_URL = (
-                    f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@"
-                    f"{self.DB_HOST}:{self.DB_PORT_READ}/{self.DB_NAME}"
+                    f"postgresql://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT_READ}/{self.DB_NAME}"
                 )
 
         return self

@@ -2,7 +2,7 @@
 import contextlib
 import os
 import socket
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -21,11 +21,9 @@ hostname = socket.gethostname()
 @events.test_start.add_listener
 def on_test_start(environment, **kwargs):
     global write_api
-    try:
+    with contextlib.suppress(Exception):
         client = InfluxDBClient(url=INFLUX_URL, token=INFLUX_TOKEN, org=INFLUX_ORG)
         write_api = client.write_api(write_options=SYNCHRONOUS)
-    except Exception:
-        pass  # 연결 실패 처리 생략
 
 
 @events.request.add_listener
@@ -35,7 +33,7 @@ def on_request(request_type, name, response_time, response_length, exception, **
             Point("locust_requests")
             .tag("result", "failure" if exception else "success")
             .field("response_time", response_time)
-            .time(datetime.now(timezone.utc))
+            .time(datetime.now(UTC))
         )
         # try:
         #     write_api.write(bucket=INFLUX_BUCKET, org=INFLUX_ORG, record=point)

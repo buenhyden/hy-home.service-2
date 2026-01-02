@@ -35,11 +35,9 @@ class MinioStorage:
 
         try:
             # 내부망을 통해 MinIO로 업로드
-            self.s3_client.upload_fileobj(
-                file_obj, self.bucket, object_name, ExtraArgs={"ContentType": content_type}
-            )
+            self.s3_client.upload_fileobj(file_obj, self.bucket, object_name, ExtraArgs={"ContentType": content_type})
 
-            # DB에 저장할 URL은 Nginx(Public) 주소로 생성            
+            # DB에 저장할 URL은 Nginx(Public) 주소로 생성
             return f"{settings.PUBLIC_ASSET_URL}/{self.bucket}/{object_name}"
 
         except ClientError as e:

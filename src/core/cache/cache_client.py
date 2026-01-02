@@ -21,9 +21,7 @@ class CacheClient:
     async def start(self):
         """앱 시작 시 Redis 연결"""
         try:
-            self.redis_client = RedisCluster.from_url(
-                settings.REDIS_URL, encoding="utf-8", decode_responses=True
-            )
+            self.redis_client = RedisCluster.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
             # 연결 테스트
             await self.redis_client.ping()
             logger.info("Redis Cache connected.")
