@@ -1,5 +1,8 @@
+"""MinIO Storage Client module."""
+
 import logging
 import uuid
+from typing import Any
 
 import boto3
 import urllib3
@@ -12,9 +15,14 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logger = logging.getLogger("core.storage")
 
 
+# ... (lines 4-14 remain same, but replacing top of file is easier if I just match top)
+# actually I will just replace the class def and top docstring separately or together if close.
+# detailed match:
 class MinioStorage:
-    def __init__(self):
-        # S3 호환 클라이언트 초기화
+    """MinIO Storage Client."""
+
+    def __init__(self) -> None:
+        """S3 호환 클라이언트 초기화."""
         self.s3_client = boto3.client(
             "s3",
             endpoint_url=settings.AWS_ENDPOINT_URL,  # http://minio:9000 (내부 통신)
@@ -25,11 +33,10 @@ class MinioStorage:
         )
         self.bucket = settings.AWS_BUCKET_NAME
 
-    def upload_file(self, file_obj, object_name=None, content_type="image/jpeg") -> str:
-        """
-        파일 객체(BytesIO 또는 UploadFile)를 MinIO에 업로드하고
-        외부에서 접근 가능한 Nginx URL을 반환합니다.
-        """
+    def upload_file(
+        self, file_obj: Any, object_name: str | None = None, content_type: str = "image/jpeg"
+    ) -> str | None:
+        """파일 객체(BytesIO 또는 UploadFile)를 MinIO에 업로드하고 외부에서 접근 가능한 Nginx URL을 반환합니다."""
         if object_name is None:
             object_name = f"{uuid.uuid4()}.jpg"
 

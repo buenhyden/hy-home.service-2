@@ -1,1 +1,1 @@
-from src.services.video_analysis import VideoAnalysisService as VideoAnalysisService
+"""Services package."""

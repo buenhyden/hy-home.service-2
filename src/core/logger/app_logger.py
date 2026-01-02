@@ -1,3 +1,5 @@
+"""Application logger configuration module."""
+
 import logging
 import os
 import sys
@@ -11,22 +13,27 @@ except ImportError:
 
 from opentelemetry import trace
 
+# 전역 로거 인스턴스 (다른 모듈에서 import하여 사용)
+logger = logging.getLogger("worker.analysis")
+
 
 class AppLogger:
+    """Application logger setup class."""
+
     class _TraceIdFilter(logging.Filter):
         def filter(self, record: logging.LogRecord) -> bool:
             span = trace.get_current_span()
             if span:
                 span_context = span.get_span_context()
                 if span_context != trace.INVALID_SPAN_CONTEXT:
-                    record.trace_id = format(span_context.trace_id, "032x")  # type: ignore[attr-defined]
+                    record.trace_id = format(span_context.trace_id, "032x")
                 else:
-                    record.trace_id = "0"  # type: ignore[attr-defined]
+                    record.trace_id = "0"
             else:
-                record.trace_id = "0"  # type: ignore[attr-defined]
+                record.trace_id = "0"
             return True
 
-    def setup(
+    def setup(  # noqa: PLR0913
         self,
         service_name: str,
         loki_url: str | None = None,
@@ -36,8 +43,7 @@ class AppLogger:
         log_file_path: str = "logs/app.log",
         log_level: int = logging.INFO,
     ) -> logging.Logger:
-        """
-        Setup and return the configured logger.
+        """Setup and return the configured logger.
 
         Args:
             service_name: Name of the service for tagging.
@@ -46,8 +52,8 @@ class AppLogger:
             enable_file: Enable file logging.
             enable_loki: Enable Loki logging.
             log_file_path: Path to the log file (default: logs/app.log).
+            log_level: Logging level (default: logging.INFO).
         """
-
         # 루트 로거 가져오기 (이름 없이 호출)
         root_logger = logging.getLogger()
         root_logger.setLevel(log_level)
@@ -65,9 +71,9 @@ class AppLogger:
             # Use uvicorn's default formatter if available, else standard
             formatter: logging.Formatter
             try:
-                from uvicorn.logging import DefaultFormatter
+                from uvicorn.logging import DefaultFormatter  # noqa: PLC0415
 
-                formatter = DefaultFormatter(  # type: ignore[assignment]
+                formatter = DefaultFormatter(
                     "%(levelprefix)s | %(asctime)s | %(message)s",
                     datefmt="%Y-%m-%d %H:%M:%S",
                 )
@@ -90,7 +96,7 @@ class AppLogger:
                 backupCount=5,
                 encoding="utf-8",
             )
-            formatter = logging.Formatter(  # type: ignore[assignment]
+            formatter = logging.Formatter(
                 "%(asctime)s - %(name)s - %(levelname)s - [TraceID: %(trace_id)s] - %(message)s"
             )
             file_handler.setFormatter(formatter)
@@ -107,6 +113,6 @@ class AppLogger:
             loki_handler.addFilter(trace_filter)  # ★ 여기 추가
             root_logger.addHandler(loki_handler)
         elif enable_loki and not loki_url:
-            print("Warning: Loki logging enabled but no URL provided.")
+            pass
 
         return root_logger

@@ -1,3 +1,5 @@
+"""Application settings module."""
+
 import json
 from typing import Any
 
@@ -5,7 +7,9 @@ from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
+class Settings(BaseSettings):  # type: ignore[misc]
+    """Application Settings."""
+
     # 기본값(default)을 설정해두면 환경변수가 없을 때 사용됩니다.
     # 환경변수가 있으면 그 값이 우선순위를 가집니다.
 
@@ -36,6 +40,7 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def assemble_db_connection(self) -> "Settings":
+        """DB 연결 URL을 조립합니다."""
         # 필수 DB 설정값이 모두 존재하는지 확인
         if self.DB_USER and self.DB_PASSWORD and self.DB_HOST and self.DB_NAME:
             # Write DB URL 조립
@@ -68,13 +73,13 @@ class Settings(BaseSettings):
     @field_validator("KAFKA_BROKERS", mode="before")
     @classmethod
     def assemble_kafka_brokers(cls, v: Any) -> list[str]:
+        """Kafka 브로커 목록을 조립합니다."""
         if isinstance(v, str):
             try:
-                print(v)
-                return json.loads(v)
+                return json.loads(v)  # type: ignore[no-any-return]
             except json.JSONDecodeError:
                 return [i.strip() for i in v.split(",") if i.strip()]
-        return v
+        return v  # type: ignore[no-any-return]
 
     # Redis & Automation
     REDIS_URL: str
@@ -90,16 +95,17 @@ class Settings(BaseSettings):
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Any) -> list[str] | str:
+        """CORS 허용 오리진을 조립합니다."""
         # Pydantic이 .env 값을 읽어서 v로 전달하므로 os.getenv 불필요
         if v is None or v == "":
             return []
 
         if isinstance(v, str):
             try:
-                return json.loads(v)
+                return json.loads(v)  # type: ignore[no-any-return]
             except json.JSONDecodeError:
                 return [i.strip() for i in v.split(",") if i.strip()]
-        return v
+        return v  # type: ignore[no-any-return]
 
     # MinIO / S3 Config
     AWS_ACCESS_KEY_ID: str

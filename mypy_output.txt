@@ -1,0 +1,17 @@
+src\core\config\settings.py:10: error: Unused "type: ignore" comment  [unused-ignore]
+src\core\config\settings.py:79: error: Returning Any from function declared to return "list[str]"  [no-any-return]
+src\core\config\settings.py:105: error: Returning Any from function declared to return "list[str] | str"  [no-any-return]
+src\core\database\session.py:29: error: Unused "type: ignore" comment  [unused-ignore]
+src\core\cache\cache_client.py:7: error: Unused "type: ignore" comment  [unused-ignore]
+src\core\cache\cache_client.py:31: error: Incompatible types in "await" (actual type "Awaitable[bool] | bool", expected type "Awaitable[Any]")  [misc]
+src\services\video_analysis.py:15: error: Library stubs not installed for "requests"  [import-untyped]
+src\services\video_analysis.py:15: note: Hint: "python3 -m pip install types-requests"
+src\services\video_analysis.py:15: note: (or run "mypy --install-types" to install all missing stub packages)
+src\services\video_analysis.py:15: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
+src\services\video_analysis.py:49: error: Incompatible types in assignment (expression has type "str", variable has type "Column[str]")  [assignment]
+src\services\video_analysis.py:51: error: Incompatible types in assignment (expression has type "str", variable has type "Column[str]")  [assignment]
+src\services\video_analysis.py:55: error: Incompatible types in assignment (expression has type "str", variable has type "Column[str]")  [assignment]
+src\services\video_analysis.py:56: error: Incompatible types in assignment (expression has type "bool", variable has type "Column[bool]")  [assignment]
+src\services\video_analysis.py:60: error: Incompatible types in assignment (expression has type "str", variable has type "Column[str]")  [assignment]
+src\services\video_analysis.py:64: error: Incompatible types in assignment (expression has type "Column[str]", variable has type "str")  [assignment]
+Found 13 errors in 4 files (checked 23 source files)

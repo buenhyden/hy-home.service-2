@@ -1,11 +1,12 @@
+"""Main entrypoint for Worker."""
+
 import asyncio
 import json
 import logging
 
 from aiokafka import AIOKafkaConsumer
 
-# src 모듈 경로 인식 (필요시)
-# sys.path.append("...")
+# src 모듈 경로 인식
 from src.core.config import settings
 from src.core.logger import AppLogger
 from src.services.video_analysis import VideoAnalysisService
@@ -24,7 +25,8 @@ app_logger.setup(
 logger = logging.getLogger(__name__)
 
 
-async def consume():
+async def consume() -> None:
+    """Kafka Message Consumer Loop."""
     consumer = AIOKafkaConsumer(
         settings.KAFKA_TOPIC_ANALYSIS,
         bootstrap_servers=settings.KAFKA_BROKERS,

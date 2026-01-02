@@ -2,7 +2,7 @@
 
 **Kafka 기반 비디오 분석 및 요약 서비스**
 
-이 서비스는 Kafka 메시지를 소비하여 비디오 URL을 수신하고, 비디오 프레임 추출, VLM(Vision Language Model)을 이용한 장면 설명, 그리고 LLM을 이용한 최종 요약을 수행하는 백그라운드 워커입니다.
+이 서비스는 Kafka 메시지를 통해 비디오 분석 요청을 수신하고, 비디오 프레임 추출, VLM(Vision Language Model)을 이용한 장면 설명, 그리고 LLM을 이용한 최종 요약을 수행하는 백그라운드 워커입니다.
 추가적으로 요약된 내용을 바탕으로 AI 썸네일과 음성 브리핑(TTS)을 생성하여 제공합니다.
 
 ---
@@ -24,6 +24,7 @@
 ## 🛠️ 기술 스택
 
 - **Language**: Python 3.12+
+- **Package Manager**: uv
 - **Framework**: Asyncio, AIOKafka
 - **Video Processing**: OpenCV, yt-dlp
 - **AI/ML Integration**: Ollama (MiniCPM-V, Exaone 3.5), Pollinations.ai
@@ -32,22 +33,46 @@
 - **Storage**: MinIO (boto3)
 - **Observability**: OpenTelemetry, Loki
 - **Containerization**: Docker, Docker Compose
+- **CI/CD**: GitHub Actions
 
 ---
 
-## 📋 필수 요구 사항
+## 📂 프로젝트 구조 및 파일 분석
 
-이 서비스를 실행하기 위해서는 다음 인프라가 필요합니다:
+이 프로젝트는 확장성과 유지보수성을 고려하여 모듈화된 구조를 따르고 있습니다.
 
-- **Kafka**: 메시지 브로커
-- **PostgreSQL**: 데이터베이스
-- **MinIO**: 객체 스토리지 (썸네일/오디오 저장용)
-- **Ollama**: AI 모델 서빙 (minicpm-v:8b, exaone3.5 모델 필요)
-- **Loki & Prometheus**: 로그 및 메트릭 수집 (선택 사항)
+### Root Directory
+- **`.agent/`**: AI 에이전트(`antigravity`)가 사용하는 메모리와 작업 내역을 저장하는 디렉토리입니다.
+- **`.cursor/`**: Cursor IDE의 설정 및 프로젝트별 룰이 저장된 디렉토리입니다.
+- **`.github/`**:
+    - `workflows/`: CI/CD 파이프라인 정의 파일(`ci.yml`)이 위치합니다.
+    - `instructions/`: AI 또는 개발자를 위한 가이드 문서가 포함될 수 있습니다.
+- **`deploy/`**: Kubernetes 배포를 위한 설정 파일(`kustomization.yaml`, `overlays/`)이 위치합니다.
+- **`docs/`**: 프로젝트 관련 문서들이 저장되는 디렉토리입니다.
+- **`logs/`**: 로컬 실행 시 발생하는 로그 파일이 저장됩니다.
+- **`src/`**: 소스 코드의 메인 디렉토리입니다.
+- **`tests/`**: 테스트 코드가 위치합니다.
+    - `unit/`: 단위 테스트.
+    - `load/`: 부하 테스트(`locustfile.py` 등).
+
+### 설정 파일 (Configuration Files)
+- **`.pre-commit-config.yaml`**: 코드 품질 관리를 위한 pre-commit hook 설정입니다. `check-json`, `check-yaml`, `ruff`, `mypy`, `detect-secrets` 등의 훅이 정의되어 있어 커밋 전에 자동으로 검사를 수행합니다.
+- **`.gitmessage`**: 일관된 커밋 메시지 작성을 위한 템플릿입니다. `<type> : <title>` 형식을 강제하며, Feat, Fix, Refactor 등 타입을 명시하도록 안내합니다.
+- **`pyproject.toml`**: Python 프로젝트 설정 및 의존성 관리 파일입니다 (기존 `poetry`에서 `uv` 호환 구성 포함). Ruff, MyPy, Pytest 등의 툴 설정도 포함되어 있습니다.
+- **`docker-compose.test.yml`**: 로컬 및 CI 환경에서 통합 테스트를 실행하기 위한 Docker Compose 설정입니다. PostgreSQL, Kafka, MinIO, Redis 등의 서비스와 함께 테스트 컨테이너를 실행합니다.
+
+### 소스 코드 (`src/`)
+- **`main.py`**: 서비스의 진입점(Entry point)입니다. Kafka Consumer를 시작합니다.
+- **`core/`**: 핵심 공통 모듈입니다.
+    - `config/`: 환경 변수 및 애플리케이션 설정 (`settings.py`).
+- **`models/`**: 데이터베이스 스키마(SQLAlchemy 모델) 정의.
+- **`services/`**: 핵심 비즈니스 로직.
+    - `video_analysis.py`: 비디오 다운로드, 프레임 추출, AI 분석 오케스트레이션.
+    - 기타 AI 및 스토리지 서비스 연동 로직 포함.
 
 ---
 
-## 🚀 설치 및 실행
+## 🚀 설치 및 실행 (Getting Started)
 
 ### 1. 환경 변수 설정
 
@@ -58,23 +83,17 @@ cp .env.example .env
 ```
 
 **주요 환경 변수:**
+- `KAFKA_BROKERS`, `KAFKA_TOPIC_ANALYSIS`
+- `OLLAMA_URL`
+- `DATABASE_URL`
+- `MINIO_ENDPOINT`, `MINIO_ACCESS_KEY`, `MINIO_SECRET_KEY`
 
-- `KAFKA_BROKERS`: Kafka 브로커 주소 (예: `localhost:9092`)
-- `KAFKA_TOPIC_ANALYSIS`: 분석 요청 토픽 (기본값: `video.analysis.request`)
-- `OLLAMA_URL`: Ollama 서버 주소 (예: `http://localhost:11434`)
-- `DATABASE_URL`: PostgreSQL 연결 문자열
-- `MINIO_ENDPOINT`: MinIO 서버 주소
-- `MINIO_ACCESS_KEY`: MinIO 액세스 키
-- `MINIO_SECRET_KEY`: MinIO 시크릿 키
-- `MINIO_BUCKET_NAME`: 저장소 버킷 이름
-- `LOKI_URL`: Loki 로그 수집 주소
+### 2. 의존성 설치 및 로컬 실행 (using uv)
 
-### 2. 로컬 실행
-
-uv를 사용하여 의존성을 설치하고 워커를 실행합니다.
+이 프로젝트는 패키지 관리자로 `uv`를 사용합니다.
 
 ```bash
-# 의존성 설치
+# 의존성 동기화
 uv sync
 
 # 워커 실행
@@ -87,33 +106,42 @@ uv run python src/main.py
 docker-compose up --build
 ```
 
----
-
-## 🧪 테스트
-
-단위 테스트를 실행하여 로직을 검증할 수 있습니다.
+### 4. Git Hook 설정
 
 ```bash
-# 테스트 실행
-uv run pytest
+# pre-commit 설치 및 설정
+uv tool install pre-commit
+pre-commit install
+```
+이제 `git commit` 시 자동으로 린트 및 포맷팅 검사가 수행됩니다.
 
-# 커버리지 확인
-uv run pytest --cov=src
+---
+
+## 🧪 테스트 (Testing)
+
+### 단위 테스트 (Unit Tests)
+`uv`를 통해 pytest를 실행합니다.
+
+```bash
+uv run pytest
+```
+
+### 통합 테스트 (Integration Tests via Docker)
+Docker Compose를 사용하여 전체 인프라(DB, Kafka 등)를 띄우고 테스트를 수행합니다.
+
+```bash
+docker-compose -f docker-compose.test.yml run --rm test
 ```
 
 ---
 
-## 📂 프로젝트 구조
+## ⛓️ CI/CD (GitHub Actions)
 
-```
-.
-├── src/
-│   ├── core/               # 설정, 로거, DB, 스토리지, 메시지 브로커 등 핵심 모듈
-│   ├── models/             # DB 모델 정의
-│   ├── services/           # 비즈니스 로직 (비디오 분석, AI 호출, TTS, 썸네일)
-│   └── main.py             # 워커 진입점 (Kafka Consumer)
-├── tests/                  # 단위 및 통합 테스트
-├── Dockerfile              # Docker 이미지 정의
-├── docker-compose.yml      # Docker Compose 구성
-└── pyproject.toml          # Poetry 및 의존성 설정
-```
+`.github/workflows/ci.yml`에 정의된 워크플로우는 `main`, `develop` 브랜치에 푸시되거나 PR이 생성될 때 실행됩니다.
+
+**주요 단계:**
+1. **Checkout**: 코드를 체크아웃합니다.
+2. **Setup uv**: 빠른 패키지 관리를 위해 `uv`를 설치합니다.
+3. **Install Dependencies**: `uv sync`를 통해 의존성을 설치합니다.
+4. **Pre-commit**: 전체 파일에 대해 린트 및 포맷 검사를 수행합니다 (`ruff`, `mypy` 등).
+5. **Test (Docker)**: `docker-compose.test.yml`을 사용하여 통합 테스트 환경을 구축하고 테스트를 실행합니다.

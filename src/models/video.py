@@ -1,3 +1,5 @@
+"""Video model module."""
+
 from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -6,6 +8,8 @@ from src.core.database import Base
 
 
 class Video(Base):
+    """Video Model."""
+
     __tablename__ = "videos"
 
     id = Column(Integer, primary_key=True, index=True)

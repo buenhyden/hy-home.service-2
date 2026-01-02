@@ -1,5 +1,8 @@
+"""Kafka producer client module."""
+
 import json
 import logging
+from typing import Any
 
 from aiokafka import AIOKafkaProducer
 
@@ -9,16 +12,19 @@ logger = logging.getLogger(__name__)
 
 
 class KafkaProducerClient:
+    """Kafka Producer Wrapper."""
+
     _instance = None
     producer: AIOKafkaProducer | None = None
 
-    def __new__(cls):
+    def __new__(cls) -> "KafkaProducerClient":
+        """Singleton pattern implementation."""
         if cls._instance is None:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    async def start(self):
-        """앱 시작 시 프로듀서 초기화"""
+    async def start(self) -> None:
+        """앱 시작 시 프로듀서 초기화."""
         try:
             # [변경] settings.KAFKA_BROKERS 리스트를 직접 전달
             self.producer = AIOKafkaProducer(bootstrap_servers=settings.KAFKA_BROKERS)
@@ -27,14 +33,14 @@ class KafkaProducerClient:
         except Exception as e:
             logger.error(f"Failed to start Kafka Producer: {e}")
 
-    async def stop(self):
-        """앱 종료 시 연결 해제"""
+    async def stop(self) -> None:
+        """앱 종료 시 연결 해제."""
         if self.producer:
             await self.producer.stop()
             logger.info("Kafka Producer stopped.")
 
-    async def send_message(self, topic: str, message: dict):
-        """메시지 전송"""
+    async def send_message(self, topic: str, message: dict[str, Any]) -> None:
+        """메시지 전송."""
         if not self.producer:
             logger.warning("Kafka Producer is not initialized.")
             return

@@ -1,3 +1,5 @@
+"""User model module."""
+
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 
@@ -5,6 +7,8 @@ from src.core.database import Base
 
 
 class User(Base):
+    """User Model."""
+
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
