@@ -4,7 +4,7 @@ import json
 import logging
 from typing import Any
 
-from redis.asyncio.cluster import RedisCluster  # type: ignore[import-untyped]
+from redis.asyncio.cluster import RedisCluster
 
 from src.core.config import settings
 
@@ -15,7 +15,7 @@ class CacheClient:
     """Redis Cache Client Wrapper."""
 
     _instance = None
-    redis_client: RedisCluster | None = None
+    redis_client: RedisCluster[bytes] | None = None
 
     def __new__(cls) -> "CacheClient":
         """Singleton pattern implementation."""
@@ -28,7 +28,7 @@ class CacheClient:
         try:
             self.redis_client = RedisCluster.from_url(settings.REDIS_URL, encoding="utf-8", decode_responses=True)
             # 연결 테스트
-            await self.redis_client.ping()
+            await self.redis_client.ping()  # type: ignore[attr-defined]
             logger.info("Redis Cache connected.")
         except Exception as e:
             logger.error(f"Failed to connect to Redis: {e}")
@@ -36,7 +36,7 @@ class CacheClient:
     async def stop(self) -> None:
         """앱 종료 시 연결 해제."""
         if self.redis_client:
-            await self.redis_client.aclose()
+            await self.redis_client.aclose()  # type: ignore[attr-defined]
             logger.info("Redis Cache disconnected.")
 
     async def get(self, key: str) -> Any:
@@ -44,7 +44,7 @@ class CacheClient:
         if not self.redis_client:
             return None
         try:
-            val = await self.redis_client.get(key)
+            val = await self.redis_client.get(key)  # type: ignore[attr-defined]
             if val:
                 return json.loads(val)
         except Exception as e:
@@ -57,7 +57,7 @@ class CacheClient:
             return
         try:
             json_val = json.dumps(value, default=str)  # datetime 등 처리를 위해 default=str
-            await self.redis_client.setex(key, ttl, json_val)
+            await self.redis_client.setex(key, ttl, json_val)  # type: ignore[attr-defined]
         except Exception as e:
             logger.error(f"Cache SET error key={key}: {e}")
 
@@ -68,10 +68,10 @@ class CacheClient:
         try:
             # SCAN을 사용하여 블로킹 없이 키 검색
             # SCAN을 사용하여 블로킹 없이 키 검색
-            keys = [key async for key in self.redis_client.scan_iter(match=pattern)]
+            keys = [key async for key in self.redis_client.scan_iter(match=pattern)]  # type: ignore[attr-defined]
 
             if keys:
-                await self.redis_client.delete(*keys)
+                await self.redis_client.delete(*keys)  # type: ignore[attr-defined]
                 logger.info(f"Invalidated cache keys pattern: {pattern}")
         except Exception as e:
             logger.error(f"Cache invalidation error pattern={pattern}: {e}")

@@ -115,6 +115,52 @@ pre-commit install
 ```
 이제 `git commit` 시 자동으로 린트 및 포맷팅 검사가 수행됩니다.
 
+### 5. 시크릿 관리 (Secret Management)
+
+이 프로젝트는 `detect-secrets`를 사용하여 민감한 정보(API 키, 비밀번호 등)가 실수로 커밋되는 것을 방지합니다.
+
+#### `.secrets.baseline` 파일이란?
+
+`.secrets.baseline` 파일은 `detect-secrets`가 알려진(허용된) 시크릿의 베이스라인을 저장하는 파일입니다. 이 파일은:
+- 프로젝트에 이미 존재하는 의도적인 시크릿 패턴을 기록합니다
+- 예를 들어, 예제 설정 파일이나 테스트용 더미 값들을 포함할 수 있습니다
+- Pre-commit hook이 이 베이스라인과 비교하여 새로운 시크릿만 감지합니다
+
+#### 베이스라인 파일 생성 및 업데이트
+
+```bash
+# 초기 베이스라인 생성 (프로젝트 전체 스캔)
+detect-secrets scan > .secrets.baseline
+
+# 베이스라인 업데이트 (새로운 파일 추가 시)
+detect-secrets scan --baseline .secrets.baseline
+```
+
+#### 새로운 시크릿 감지 시 대응
+
+커밋 시 `detect-secrets`가 새로운 시크릿을 감지하면:
+
+1. **실제 시크릿인 경우**:
+   - 절대 커밋하지 마세요
+   - `.env` 파일이나 환경 변수로 관리하세요
+   - 이미 커밋한 경우 즉시 키를 교체하고 Git 히스토리에서 제거하세요
+
+2. **False Positive (오탐)인 경우**:
+   ```bash
+   # 베이스라인에 추가 (허용 목록에 등록)
+   detect-secrets scan --baseline .secrets.baseline
+
+   # 변경사항 확인 후 커밋
+   git add .secrets.baseline
+   git commit
+   ```
+
+#### 주의사항
+
+- `.secrets.baseline` 파일 자체는 **시크릿을 포함하지 않습니다** (해시값만 저장)
+- 정기적으로 베이스라인을 검토하여 불필요한 항목을 제거하세요
+- 실제 시크릿은 반드시 `.env` 파일에 저장하고, `.gitignore`에 추가하세요
+
 ---
 
 ## 🧪 테스트 (Testing)

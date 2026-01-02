@@ -7,7 +7,7 @@ from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):  # type: ignore[misc]
+class Settings(BaseSettings):
     """Application Settings."""
 
     # 기본값(default)을 설정해두면 환경변수가 없을 때 사용됩니다.
