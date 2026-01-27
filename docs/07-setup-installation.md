@@ -17,7 +17,7 @@ The `bootstrap-new-project` script automates the personalization of the codebase
 
 1. **Prompts** for your new Project Name and Description.
 2. **Updates** `README.md` and `package.json`.
-3. **Replaces** `Init-Project-Template` with your project name across all documentation (`docs/`, `ARCHITECTURE.md`, etc.) and config files.
+3. **Replaces** `hy-home.service-2` with your project name across all documentation (`docs/`, `ARCHITECTURE.md`, etc.) and config files.
 4. **Runs** the workspace setup to migrate agent rules.
 
 Choose the method that fits your workflow:
@@ -74,3 +74,4 @@ npm test
 # OR
 make test
 ```
+

@@ -1,6 +1,6 @@
 # Project Documentation
 
-Welcome to the **Init-Project-Template** documentation. This folder contains the comprehensive guide to understanding, building, and maintaining applications using this template.
+Welcome to the **hy-home.service-2** documentation. This folder contains the comprehensive guide to understanding, building, and maintaining applications using this template.
 
 ## 📚 Core Documentation
 
@@ -40,3 +40,4 @@ For creating new documentation, please refer to the `templates/` directory in th
 
 * `prd-template.md`
 * `spec-template.md`
+

@@ -1,6 +1,6 @@
 # Specifications (Spec-Driven Development)
 
-This directory is the **starting point** for all new features in the Init-Project-Template workflow.
+This directory is the **starting point** for all new features in the hy-home.service-2 workflow.
 
 ## The Flow
 
@@ -20,3 +20,4 @@ This directory is the **starting point** for all new features in the Init-Projec
 - **`[feature].prd.md`**: Product Requirements (Metrics, Personas).
 
 Use `templates/spec-template.md` and `templates/prd-template.md` as your baselines.
+

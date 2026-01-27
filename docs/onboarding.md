@@ -1,6 +1,6 @@
 # Developer Onboarding Guide
 
-Welcome to the **Init-Project-Template**. This guide will walk you through the structural principles, governance standards, and automated workflows that make this repository AI-optimized and highly scalable.
+Welcome to the **hy-home.service-2**. This guide will walk you through the structural principles, governance standards, and automated workflows that make this repository AI-optimized and highly scalable.
 
 ---
 
@@ -8,7 +8,7 @@ Welcome to the **Init-Project-Template**. This guide will walk you through the s
 
 This project is built around four core **Standards Pillars** located in `.agent/rules/`:
 
-1. **[0000] Agents**: Specialized AI personas (see [AGENTS.md](file:///d:/hy-home.SourceCode/Init-Project-Template/AGENTS.md)).
+1. **[0000] Agents**: Specialized AI personas (see [AGENTS.md](file:///d:/hy-home.SourceCode/hy-home.service-2/AGENTS.md)).
 2. **[0100] Standards**: Core engineering principles, architecture, and documentation.
 3. **[0200] Workflows**: SDLC, Git branching, and automation logic.
 4. **[0400+] Domains**: Specific tech stack rules (Python, React, AWS, etc.).
@@ -23,7 +23,7 @@ Every requirement in this project is pinned to a unique identifier: `[REQ-XXX-NN
 
 AI agents are "First-Class Citizens" in this repository.
 
-- **Persona Switch**: When starting a task, instruct the agent to adopt a specific persona from [AGENTS.md](file:///d:/hy-home.SourceCode/Init-Project-Template/AGENTS.md).
+- **Persona Switch**: When starting a task, instruct the agent to adopt a specific persona from [AGENTS.md](file:///d:/hy-home.SourceCode/hy-home.service-2/AGENTS.md).
 - **Rule Adherence**: Agents are governed by the `.md` files in `.agent/rules`. If you identify a structural flaw, update the rule file, and the agent will adapt instantly.
 
 ---
@@ -32,7 +32,7 @@ AI agents are "First-Class Citizens" in this repository.
 
 ### Project Initialization
 
-IF starting a new feature THEN MUST follow the [Project Init Workflow](file:///d:/hy-home.SourceCode/Init-Project-Template/.agent/workflows/Global/workflow-project-init.md).
+IF starting a new feature THEN MUST follow the [Project Init Workflow](file:///d:/hy-home.SourceCode/hy-home.service-2/.agent/workflows/Global/workflow-project-init.md).
 
 ### Creating Requirements (PRD)
 
@@ -59,4 +59,5 @@ Before merging any code, verify:
 ## 🆘 Support & Resources
 
 - **ADRs**: check `docs/adr/` for historical architectural decisions.
-- **Rules Master**: see [0100-unified-master.md](file:///d:/hy-home.SourceCode/Init-Project-Template/.agent/rules/0100-Standards/0100-unified-master.md).
+- **Rules Master**: see [0100-unified-master.md](file:///d:/hy-home.SourceCode/hy-home.service-2/.agent/rules/0100-Standards/0100-unified-master.md).
+

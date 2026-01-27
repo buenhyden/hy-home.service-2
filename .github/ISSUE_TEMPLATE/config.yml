@@ -1,8 +1,9 @@
 blank_issues_enabled: false
 contact_links:
   - name: 💬 Project Discussions
-    url: https://github.com/buenhyden/Init-Project-Template/discussions
+    url: https://github.com/buenhyden/hy-home.service-2/discussions
     about: Ask questions and share ideas with the community.
   - name: 📘 Documentation
-    url: https://github.com/buenhyden/Init-Project-Template/tree/main/docs
+    url: https://github.com/buenhyden/hy-home.service-2/tree/main/docs
     about: Access the project's guides and standards.
+

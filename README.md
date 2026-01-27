@@ -1,10 +1,10 @@
-# Init-Project-Template
+# hy-home.service-2
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub release](https://img.shields.io/github/release/buenhyden/Init-Project-Template.svg)](https://github.com/buenhyden/Init-Project-Template/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/buenhyden/hy-home.service-2.svg)](https://github.com/buenhyden/hy-home.service-2/releases/latest)
 [![Agent Ready](https://img.shields.io/badge/Agent-Ready-blue?style=flat&logo=robot)](AGENTS.md)
 
-**A standardized, AI-optimized project template designed for high-fidelity agentic software development.**
+**입력받은 텍스트의 내용을 분석하고 이 내용을 바탕으로 이미지를 생성하며, 생성된 이미지를 바탕으로 뉴스를 브리핑하는 영상을 제작하도록 한다. 
 
 This template provides a robust foundation for cooperative development between human engineers and AI coding agents (Gemini, Claude, GPT). It ensures consistency, security, and engineering excellence through a system of strict, machine-parseable rules.
 
@@ -117,3 +117,5 @@ We welcome contributions! Please see **[CONTRIBUTING.md](CONTRIBUTING.md)** for 
 ## 📄 License
 
 This project is licensed under the MIT License - see the **[LICENSE](LICENSE)** file for details.
+
+

@@ -1,6 +1,6 @@
 # Technology Stack
 
-The **Init-Project-Template** is language-agnostic in its core governance but optimized for a modern, full-stack ecosystem.
+The **hy-home.service-2** is language-agnostic in its core governance but optimized for a modern, full-stack ecosystem.
 
 ## 💻 Core Stack
 
@@ -29,3 +29,4 @@ The **Init-Project-Template** is language-agnostic in its core governance but op
 ## ⚖️ Reasoning
 
 We choose this stack to balance **performance**, **developer experience**, and **AI-compatibility**. TypeScript and Python offer the best support for modern AI coding agents, while Docker ensures consistent environments.
+

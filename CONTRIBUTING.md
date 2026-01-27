@@ -1,6 +1,6 @@
-# Contributing to Init-Project-Template
+# Contributing to hy-home.service-2
 
-Thank you for your interest in contributing to the **Init-Project-Template**! This project is designed to be an AI-optimized foundation for modern software development.
+Thank you for your interest in contributing to the **hy-home.service-2**! This project is designed to be an AI-optimized foundation for modern software development.
 
 ## 🤝 Code of Conduct
 
@@ -60,3 +60,4 @@ We use **Conventional Commits**. Examples:
 ## 🐛 Reporting Bugs
 
 Please use the [Bug Report Template](.github/ISSUE_TEMPLATE/bug_report.md) to report issues. Provide as much context as possible (logs, screenshots, steps to reproduce).
+

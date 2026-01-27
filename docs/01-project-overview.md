@@ -2,7 +2,7 @@
 
 ## 🚀 Mission
 
-The **Init-Project-Template** is a standardized, AI-optimized project template designed for high-fidelity agentic software development. It provides a robust foundation for building applications with the assistance of AI coding agents, ensuring consistency, security, and engineering excellence.
+The **hy-home.service-2** is a standardized, AI-optimized project template designed for high-fidelity agentic software development. It provides a robust foundation for building applications with the assistance of AI coding agents, ensuring consistency, security, and engineering excellence.
 
 ## 💡 Philosophy: AI-Optimized Development (AOD)
 
@@ -22,3 +22,4 @@ This project is built on the premise that modern software development is a colla
 * **⚡ Orchestration-First**: Unified shell and PowerShell scripts for language-agnostic setup and workspace management.
 * **📝 Documentation-Driven**: Integrated templates for PRDs, Specs, and ADRs to ensure every decision is recorded.
 * **🛡️ Secure by Default**: Integrated security governance and QA protocols.
+

@@ -40,7 +40,7 @@ Please mark the relevant option:
 - [ ] 🧪 **Tests**: Unit and integration tests pass locally.
 - [ ] 📏 **Linting**: Code adheres to project styling standards (ESLint/Prettier).
 - [ ] 📘 **Documentation**: Relevant `README.md` or `docs/` files have been updated.
-- [ ] 🏗️ **Architecture**: Changes follow the defined [ARCHITECTURE.md](file:///d:/hy-home.SourceCode/Init-Project-Template/ARCHITECTURE.md) layering.
+- [ ] 🏗️ **Architecture**: Changes follow the defined [ARCHITECTURE.md](file:///d:/hy-home.SourceCode/hy-home.service-2/ARCHITECTURE.md) layering.
 - [ ] 🛡️ **Security**: No sensitive data is exposed, and security standards are met.
 
 ---
@@ -48,3 +48,4 @@ Please mark the relevant option:
 ## 💬 Additional Notes
 
 Any extra context or warnings for the reviewer.
+

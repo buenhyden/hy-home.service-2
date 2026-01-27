@@ -11,7 +11,7 @@ C4Context
     title "AI-Optimized Project Template Context"
     
     Person(dev, "Developer", "Uses the template to build applications")
-    System(template, "Init-Project-Template", "Core structural & governance system")
+    System(template, "hy-home.service-2", "Core structural & governance system")
     System_Ext(agents, "AI Agents", "Coding assistants (Gemini, Claude, GPT)")
     
     Rel(dev, template, "Clones & Configures")
@@ -53,3 +53,4 @@ All components MUST adhere to the [Architecture Standard (0130)](../../.agent/ru
 * **Zero Circularity**: Circular dependencies are strictly prohibited.
 * **ADR Governance**: Significant design decisions MUST be recorded in `docs/adr/`.
 * **Traceability**: Every major commit or PR should reference a technical specification.
+

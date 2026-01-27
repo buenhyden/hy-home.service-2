@@ -1,4 +1,4 @@
-# Init-Project-Template Changelog
+# hy-home.service-2 Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Documentation**: Complete reorganization of the `docs/` folder with 10 new core guides ([#Task-Docs](file:///d:/hy-home.SourceCode/Init-Project-Template/docs/README.md)).
+- **Documentation**: Complete reorganization of the `docs/` folder with 10 new core guides ([#Task-Docs](file:///d:/hy-home.SourceCode/hy-home.service-2/docs/README.md)).
 - **GitHub**: Added `release.yml` and `labeler.yml` for automated repository management.
 - **Root Docs**: Updated `CONTRIBUTING.md` and `LICENSE` files.
 
@@ -59,3 +59,4 @@ This release marks the transition from a prototype to a fully standardized, prod
 - Refined repository metadata for better template usability.
 - Updated `LICENSE` to MIT for open-source friendliness.
 - Optimized linting rules for Markdown and JavaScript.
+
