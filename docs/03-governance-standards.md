@@ -31,13 +31,13 @@ The codebase is governed by four core technical pillars:
 
 * **Focus**: Vulnerability Management, Testing Coverage, Security Auditing.
 * **Goal**: Ensure the codebase is secure-by-default and error-resilient.
-* **Reference**: [0500-security-governance-standard.md](../../.agent/rules/2200-Security/0500-security-governance-standard.md)
+* **Reference**: [2200-security-pillar.md](../../.agent/rules/2200-Security/2200-security-pillar.md)
 
 ### 4. Technology Stack (0150/1000)
 
 * **Focus**: Strict Typing, Framework Patterns, Dependency Management.
 * **Goal**: Enforce technical consistency and leverage framework best practices.
-* **Reference**: [1000-tech-stack-standard.md](../../.agent/rules/1000-Tech_Stack/1000-tech-stack-standard.md)
+* **Reference**: [0150-tech-stack-standard.md](../../.agent/rules/0100-Standards/0150-tech-stack-standard.md)
 
 ## 🔄 Governance Lifecycle
 

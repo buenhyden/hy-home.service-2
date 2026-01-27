@@ -56,16 +56,16 @@ The project operates under a **Multi-Pillar Governance** model. All modification
 
 | Pillar | Focus Area | Core Standard |
 | --- | --- | --- |
-| **0100: Standards** | Engineering Excellence | [0100-unified-master.md](file:///d:/hy-home.SourceCode/hy-home.service-2/.agent/rules/0100-Standards/0100-unified-master.md) |
-| **0200: Workflows** | SDLC & Git Operations | [0200-workflow-standard.md](file:///d:/hy-home.SourceCode/hy-home.service-2/.agent/rules/0200-Workflows/0200-workflow-standard.md) |
-| **0500: Security** | Vulnerability Management | [0500-security-governance-standard.md](file:///d:/hy-home.SourceCode/hy-home.service-2/.agent/rules/2200-Security/0500-security-governance-standard.md) |
-| **1000: Tech Stack** | Framework & Typing | [1000-tech-stack-standard.md](file:///d:/hy-home.SourceCode/hy-home.service-2/.agent/rules/1000-Tech_Stack/1000-tech-stack-standard.md) |
+| **0100: Standards** | Engineering Excellence | [0100-unified-master.md](.agent/rules/0100-Standards/0100-unified-master.md) |
+| **0200: Workflows** | SDLC & Git Operations | [0200-workflow-standard.md](.agent/rules/0200-Workflows/0200-workflow-standard.md) |
+| **0500: Security** | Vulnerability Management | [2200-security-pillar.md](.agent/rules/2200-Security/2200-security-pillar.md) |
+| **1000: Tech Stack** | Framework & Typing | [0150-tech-stack-standard.md](.agent/rules/0100-Standards/0150-tech-stack-standard.md) |
 
 ---
 
 ## 4. Structural Standards
 
-All components MUST adhere to the [Architecture Standard (0130)](file:///d:/hy-home.SourceCode/hy-home.service-2/.agent/rules/0100-Standards/0130-architecture-standard.md):
+All components MUST adhere to the [Architecture Standard (0130)](.agent/rules/0100-Standards/0130-architecture-standard.md):
 
 - **Directional Dependency**: Presentation -> Domain -> Data.
 - **Zero Circularity**: Circular dependencies are strictly prohibited.
@@ -82,4 +82,3 @@ All components MUST adhere to the [Architecture Standard (0130)](file:///d:/hy-h
 | **Orchestration** | Universal Scripts / Make | OS-agnostic execution |
 | **Governance** | Markdown-based Rules | Human/Machine parseable |
 | **Verification** | NPM Scripts / Pytest | Automated QA protocols |
-

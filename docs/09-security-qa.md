@@ -13,7 +13,7 @@ We follow a "Secure by Default" philosophy.
 * **Auditing**: Integration with tools like TruffleHog.
 * **SAST**: Static Application Security Testing is integrated into the workflow.
 
-**Reference**: [0500-security-governance-standard.md](../../agent_settings/rules/2200-Security/0500-security-governance-standard.md)
+**Reference**: [2200-security-pillar.md](../../.agent/rules/2200-Security/2200-security-pillar.md)
 
 ## 🧪 Quality Assurance (Pillar 0700)
 

@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/release/buenhyden/hy-home.service-2.svg)](https://github.com/buenhyden/hy-home.service-2/releases/latest)
 [![Agent Ready](https://img.shields.io/badge/Agent-Ready-blue?style=flat&logo=robot)](AGENTS.md)
 
-**입력받은 텍스트의 내용을 분석하고 이 내용을 바탕으로 이미지를 생성하며, 생성된 이미지를 바탕으로 뉴스를 브리핑하는 영상을 제작하도록 한다. 
+**입력받은 텍스트의 내용을 분석하고 이 내용을 바탕으로 이미지를 생성하며, 생성된 이미지를 바탕으로 뉴스를 브리핑하는 영상을 제작하도록 한다.
 
 This template provides a robust foundation for cooperative development between human engineers and AI coding agents (Gemini, Claude, GPT). It ensures consistency, security, and engineering excellence through a system of strict, machine-parseable rules.
 
@@ -104,7 +104,7 @@ We have organized documentation into the `docs/` directory. Start here:
 
 When asking an AI agent to work on this repository, explicitly reference a **Persona** and **Workflow**.
 
-> "Act as the **[Architect]**. Review `docs/prd/my-feature.md` and create a technical spec in `specs/` following the [Spec/Design Standard](.agent/rules/0100-Standards/0120-spec-design-standard.md)."
+> "Act as the **[Architect]**. Review `docs/prd/my-feature.md` and create a technical spec in `specs/` following the [Spec/Design Standard](.agent/rules/0100-Standards/0120-requirements-and-specifications-standard.md)."
 
 See **[AGENTS.md](AGENTS.md)** for the full list of available personas.
 
@@ -117,5 +117,3 @@ We welcome contributions! Please see **[CONTRIBUTING.md](CONTRIBUTING.md)** for 
 ## 📄 License
 
 This project is licensed under the MIT License - see the **[LICENSE](LICENSE)** file for details.
-
-
