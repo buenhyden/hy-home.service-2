@@ -1,0 +1,31 @@
+# Configuration for .github/workflows/labeler.yml
+
+# Documentation
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: "docs/**"
+      - any-glob-to-any-file: "*.md"
+
+# Agent & Governance
+governance:
+  - changed-files:
+      - any-glob-to-any-file: ".agent/**"
+      - any-glob-to-any-file: "agent_settings/**"
+
+# Infrastructure & DevOps
+infrastructure:
+  - changed-files:
+      - any-glob-to-any-file: ".github/**"
+      - any-glob-to-any-file: "Dockerfile"
+      - any-glob-to-any-file: "docker-compose.yml"
+      - any-glob-to-any-file: "scripts/**"
+
+# Source Code
+feature:
+  - changed-files:
+      - any-glob-to-any-file: "src/**"
+
+# Tests
+testing:
+  - changed-files:
+      - any-glob-to-any-file: "tests/**"

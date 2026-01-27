@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [".agent/rules/**/*.md"],
+  // Theme configuration
+  "theme": "tokyonight",
+  "autoupdate": true,
+  "permission": { "skill": "allow" },
+  "plugin": ["@tarquinen/opencode-dcp@latest", "@nick-vi/opencode-type-inject", "@openspoon/subtask2@latest", "@zenobius/opencode-skillful"],
+  "server": {
+    "port": 4096,
+    "hostname": "0.0.0.0",
+    "mdns": true,
+    "cors": ["http://localhost:4096"],
+  },
+}

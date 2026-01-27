@@ -1,0 +1,5 @@
+{
+  "default": true,
+  "MD013": false,
+  "ignores": ["agent/workflows/**", "agent/rules/**", ".agent/workflows/**", ".agent/rules/**"]
+}

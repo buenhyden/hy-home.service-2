@@ -1,0 +1,89 @@
+name: CI
+
+on:
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
+
+jobs:
+    # =================================================================================================
+    # 🚀 CI Templates: Uncomment the section relevant to your Tech Stack
+    # =================================================================================================
+
+    # This placeholder job ensures the workflow file is valid YAML even if all other jobs are commented out.
+    # You can remove this job once you uncomment the specific stack below.
+    ci-template-placeholder:
+        runs-on: ubuntu-latest
+        steps:
+            - run:
+                  echo "This is a template. Please uncomment the CI job relevant
+                  to your stack in .github/workflows/ci.yml"
+
+    # -------------------------------------------------------------------------------------------------
+    # 🟢 Node.js / TypeScript / Next.js
+    # -------------------------------------------------------------------------------------------------
+    # node-ci:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - uses: actions/checkout@v4
+    #     - uses: actions/setup-node@v4
+    #       with:
+    #         node-version: 20
+    #         cache: 'npm'
+    #     - run: npm ci
+    #     - run: npm run lint --if-present
+    #     - run: npm test --if-present
+    #     - run: npm run build --if-present
+
+    # -------------------------------------------------------------------------------------------------
+    # 🐍 Python
+    # -------------------------------------------------------------------------------------------------
+    # python-ci:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - uses: actions/checkout@v4
+    #     - uses: actions/setup-python@v5
+    #       with:
+    #         python-version: "3.11"
+    #         cache: 'pip'
+    #     - run: |
+    #         python -m pip install --upgrade pip
+    #         pip install -r requirements.txt
+    #     - run: |
+    #         # pip install flake8 pytest
+    #         # flake8 .
+    #         # pytest
+
+    # -------------------------------------------------------------------------------------------------
+    # 🐹 Go
+    # -------------------------------------------------------------------------------------------------
+    # go-ci:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - uses: actions/checkout@v4
+    #     - uses: actions/setup-go@v5
+    #       with:
+    #         go-version: '1.21'
+    #     - run: go build -v ./...
+    #     - run: go test -v ./...
+
+    # -------------------------------------------------------------------------------------------------
+    # 🦀 Rust
+    # -------------------------------------------------------------------------------------------------
+    # rust-ci:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - uses: actions/checkout@v4
+    #     - run: cargo build --verbose
+    #     - run: cargo test --verbose
+
+    # -------------------------------------------------------------------------------------------------
+    # 🛡️ Security (General)
+    # -------------------------------------------------------------------------------------------------
+    # security-scan:
+    #   runs-on: ubuntu-latest
+    #   steps:
+    #     - uses: actions/checkout@v4
+    #     - name: Run TruffleHog
+    #       uses: trufflesecurity/trufflehog@main

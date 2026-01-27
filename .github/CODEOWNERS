@@ -1,0 +1,10 @@
+# This file defines individuals or teams responsible for specific code paths.
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything
+* @buenhyden
+
+# Specific owners for sensitive areas
+/.github/workflows/ @buenhyden
+/agent_settings/ @buenhyden
+/scripts/ @buenhyden
