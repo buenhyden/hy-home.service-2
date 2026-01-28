@@ -52,7 +52,6 @@ Before merging any code, verify:
 
 1. **Skeleton Compliance**: All rules follow the 8-section skeleton.
 2. **Traceability**: 100% of functional logic maps back to a requirement ID.
-3. **Audit Pass**: Run `python deep_rule_audit.py` (when available) for compliance.
 
 ---
 

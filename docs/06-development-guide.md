@@ -42,4 +42,4 @@ Before merging any code, verify:
 1. **Skeleton Compliance**: All rules follow the 8-section skeleton.
 2. **Traceability**: 100% of functional logic maps back to a requirement ID.
 3. **Tests**: 100% coverage for new logic.
-4. **Audit**: Run compliance audits (e.g., `python deep_rule_audit.py`).
+

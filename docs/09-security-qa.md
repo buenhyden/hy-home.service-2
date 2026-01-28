@@ -35,4 +35,4 @@ We promote a "Test-First" philosophy supported by automated CI workflows.
 
 Periodic audits are performed to ensure compliance with all governance rules.
 
-* **Deep Rule Audit**: A script (`deep_rule_audit.py`) is used to verify that code maps back to standard requirements.
+

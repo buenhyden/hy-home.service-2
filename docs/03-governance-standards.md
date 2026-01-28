@@ -44,4 +44,4 @@ The codebase is governed by four core technical pillars:
 1. **Planning**: PRDs and Specs must reference relevant `[REQ]` IDs.
 2. **Implementation**: Code must follow the ID-indexed rules.
 3. **Review**: Pull Requests are audited against the pillars before merging.
-4. **Audit**: Periodic audits (e.g., using `deep_rule_audit.py`) ensure ongoing compliance.
+
