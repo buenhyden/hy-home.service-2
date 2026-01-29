@@ -28,7 +28,6 @@ This template provides a robust foundation for cooperative development between h
 ├── .github/                # GitHub Workflows, Templates & Actions
 ├── agent_settings/         # Master Knowledge Base (Full Rules & Skills Library)
 ├── docs/                   # 📚 Project Documentation
-│   ├── guides/             # "How-To" Guides
 │   ├── adr/                # Architecture Decision Records
 │   ├── prd/                # Product Requirements
 │   ├── 01-overview.md      # Project Mission & Philosophy

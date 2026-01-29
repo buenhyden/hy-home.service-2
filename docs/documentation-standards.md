@@ -7,10 +7,6 @@ This document defines how documentation is organized within the `docs/` folder a
 ```text
 docs/
 ├── adr/                    # Architecture Decision Records (C4 Modeling)
-├── guides/                 # How-to guides and tutorials
-│   ├── debugging/          # Troubleshooting and auditing
-│   ├── development/        # Feature implementation and workflows
-│   └── setup/              # Environment and tool configuration
 ├── prd/                    # Product Requirement Documents
 ├── onboarding.md           # Entry point for new developers
 ├── README.md               # Documentation index (Root of /docs)

@@ -31,7 +31,6 @@ Welcome to the **hy-home.service-2** documentation. This folder contains the com
 ## 📂 Additional Resources
 
 * **[adr/](./adr/)**: Architecture Decision Records (Historical design context).
-* **[guides/](./guides/)**: Specific how-to guides for debugging, development, and setup.
 * **[prd/](./prd/)**: Product Requirement Documents for features.
 
 ## 📝 Templates

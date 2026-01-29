@@ -11,7 +11,6 @@ This document provides a detailed map of the project's directory structure and t
 ├── agent_settings/         # (Transient) Initial template settings (Deleted after setup)
 ├── docs/                   # Project documentation (ADRs, Guides, PRDs, Onboarding)
 │   ├── adr/                # Architecture Decision Records
-│   ├── guides/             # Developer guides and how-tos
 │   └── prd/                # Product Requirement Documents
 ├── examples/               # Example implementations and usage patterns
 ├── scripts/                # Utility scripts for bootstrap, sync, and setup

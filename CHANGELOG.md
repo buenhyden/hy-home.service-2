@@ -22,7 +22,6 @@ This release marks the transition from a prototype to a fully standardized, prod
 ### Added
 
 - **Polyglot Orchestration**: Added `Makefile` and Universal Scripts (`bootstrap-new-project`) to support Python, Go, Rust, and Node.js equally.
-- **Workflow/Guide Separation**: Migrated 17 "How-To" guides to `docs/guides/` and consolidated 49 workflow files.
 - **Bootstrapping**: New `npm run init` (or `make init`) command to automate project naming and git reset.
 - **Specs Directory**: Added `specs/` as the official entry point for Spec-Driven Development (SDD).
 
