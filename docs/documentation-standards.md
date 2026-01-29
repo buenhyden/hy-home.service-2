@@ -6,24 +6,28 @@ This document defines how documentation is organized within the `docs/` folder a
 
 ```text
 docs/
-├── adr/                    # Architecture Decision Records (C4 Modeling)
-├── prd/                    # Product Requirement Documents
-├── onboarding.md           # Entry point for new developers
-├── README.md               # Documentation index (Root of /docs)
-└── documentation-standards.md # This file
+├── adr/                        # Architecture Decision Records
+├── prd/                        # Product Requirement Documents
+├── 01-project-overview.md      # Mission & Philosophy
+├── 02-architecture.md          # System Design
+├── ...                         # Numbered guides 03-10
+├── onboarding.md               # Entry point for new developers
+├── README.md                   # Documentation index (Root of /docs)
+└── documentation-standards.md  # This file
 ```
 
 ---
 
 ## 🏷️ Naming Conventions
 
-Files should follow a kebab-case naming convention with a prefix indicating the guide's purpose:
+Files should follow a numbered system to ensure a logical reading order:
 
-- **`setup-`**: For installation and configuration (e.g., `setup-environment-variables.md`).
-- **`debug-`**: For troubleshooting and auditing (e.g., `debug-module-not-found.md`).
-- **`audit-`**: For security or accessibility checks (e.g., `audit-accessibility.md`).
-- **`sync-`**: For synchronization tasks (e.g., `sync-git-fork.md`).
-- **`implement-`**: For feature implementation (e.g., `implement-feature-flags.md`).
+- **`01-project-overview.md`**: Mission, philosophy, and high-level goals.
+- **`02-architecture.md`**: System design and boundaries.
+- **`03-governance-standards.md`**: Rules and policies.
+- ... and so on.
+
+This structure allows new developers to read sequentially from 01 to 10 to gain a complete understanding of the system.
 
 ---
 

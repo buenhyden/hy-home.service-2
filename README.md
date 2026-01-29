@@ -1,22 +1,20 @@
-# hy-home.service-2
+# News Briefing Agent Service
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub release](https://img.shields.io/github/release/buenhyden/hy-home.service-2.svg)](https://github.com/buenhyden/hy-home.service-2/releases/latest)
 [![Agent Ready](https://img.shields.io/badge/Agent-Ready-blue?style=flat&logo=robot)](AGENTS.md)
 
-**입력받은 텍스트의 내용을 분석하고 이 내용을 바탕으로 이미지를 생성하며, 생성된 이미지를 바탕으로 뉴스를 브리핑하는 영상을 제작하도록 한다.
+**An autonomous AI service that turns text into engaging news briefing videos.**
 
-This template provides a robust foundation for cooperative development between human engineers and AI coding agents (Gemini, Claude, GPT). It ensures consistency, security, and engineering excellence through a system of strict, machine-parseable rules.
+The system analyzes input text, generates relevant imagery using AI, and synthesizes a professional news briefing video.
 
 ---
 
 ## 🚀 Key Features
 
-* **🤖 Agent-Ready**: Built-in specialized personas ([AGENTS.md](AGENTS.md)) and specific rule sets for deterministic AI reasoning.
-* **🏛️ Multi-Pillar Governance**: Development is governed by four pillars: [Standards](docs/03-governance-standards.md), [Workflows](docs/03-governance-standards.md), [Security](docs/09-security-qa.md), and [Tech Stack](docs/08-tech-stack.md).
-* **⚡ Polyglot Orchestration**: Unified `Makefile` and PowerShell/Shell `scripts/` support Node.js, Python, Go, and Rust.
-* **📝 Documentation-Driven**: Integrated templates for PRDs and Specs to promote "Document First, Code Later".
-* **🛡️ Secure by Default**: Pre-configured GitHub Actions for security scanning (TruffleHog) and dependency updates (Dependabot).
+* **📰 Intelligent Text Analysis**: NLP-driven extraction of key themes, summary points, and sentiment.
+* **🎨 Dynamic Image Generation**: Creation of context-aware visuals and illustrations for each news segment.
+* **🎬 Automated Video Synthesis**: Assembly of images, voice-over, and transitions into a coherent video brief.
+* **🤖 Agent-Ready Core**: Built on the **hy-home.service-2** template, ensuring robust governance and AI-collaboration standards.
 
 ---
 
@@ -55,7 +53,7 @@ This template provides a robust foundation for cooperative development between h
 
 ### 1. Initialize Project
 
-**Unix (Mac/Linux)**
+#### Unix (Mac/Linux)
 
 ```bash
 ./scripts/bootstrap-new-project.sh
@@ -63,7 +61,7 @@ This template provides a robust foundation for cooperative development between h
 make init
 ```
 
-**Windows (PowerShell)**
+#### Windows (PowerShell)
 
 ```powershell
 ./scripts/bootstrap-new-project.ps1
@@ -89,13 +87,16 @@ make setup
 
 We have organized documentation into the `docs/` directory. Start here:
 
-* **[Project Overview](docs/01-project-overview.md)**: Philosophy and Mission.
-* **[Architecture](docs/02-architecture.md)**: System design and logical layering.
-* **[Governance Standards](docs/03-governance-standards.md)**: The rules that govern this repo.
-* **[Agent Integration](docs/04-agent-integration.md)**: How to work with the AI personas.
-* **[Repository Structure](docs/05-repository-structure.md)**: Detailed folder breakdown.
-* **[Development Guide](docs/06-development-guide.md)**: Workflow, branching, and testing.
-* **[Tech Stack](docs/08-tech-stack.md)**: Languages and tools.
+* **[01-project-overview.md](docs/01-project-overview.md)**: Mission, Philosophy, and Key Features.
+* **[02-architecture.md](docs/02-architecture.md)**: System design and logical layering (C4 Model).
+* **[03-governance-standards.md](docs/03-governance-standards.md)**: The 4 Governance Pillars and Rule ID system.
+* **[04-agent-integration.md](docs/04-agent-integration.md)**: Personas, Skills, Workflows, and how to collaborate with AI.
+* **[05-repository-structure.md](docs/05-repository-structure.md)**: Detailed folder breakdown and purpose.
+* **[06-development-guide.md](docs/06-development-guide.md)**: SDLC, branching strategy, and "Definition of Done".
+* **[07-setup-installation.md](docs/07-setup-installation.md)**: Prerequisites and quick start guide.
+* **[08-tech-stack.md](docs/08-tech-stack.md)**: Languages, frameworks, and tooling choices.
+* **[09-security-qa.md](docs/09-security-qa.md)**: Security protocols, testing standards, and audits.
+* **[10-infrastructure.md](docs/10-infrastructure.md)**: Docker, CI/CD, and orchestration scripts.
 
 ---
 
