@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+.pyre/
+.pyright/
+*.egg-info/
+.venv/
+venv/
+.mypy_cache/
+.pytype/
+.pyvenv
+
+
+# Node.js/TypeScript/JavaScript
+node_modules/
+dist/
+build/
+*.log
+.env
+.env.local
+.env.production
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Testing
+coverage/
+.nyc_output/
+.pytest_cache/
+.vitest/
+tests/.tmp_validate_docs/
+tests/tmp*/
+tests/_tmp_*/
+tests/_tmp_*
+
+# IDE
+.vscode/
+!.vscode/extensions.json
+.idea/
+.DS_Store
+*.swp
+*.swo
+*.sublime-*
+
+# Universal
+*.tmp
+Thumbs.db
+
+# Project-specific
+uploads/
+.history/
+
+# Antigravity Rules
+.agent/rules/**/*
+!.agent/rules/.gitkeep
+# Antigravity Skills
+.agent/skills/*
+!.agent/skills/.gitkeep
+# Antigravity Workflows
+.agent/workflows/*
+!.agent/workflows/.gitkeep
+
+# opencode Skills
+.opencode/skills/
+!.opencode/skills/.gitkeep

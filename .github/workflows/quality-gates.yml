@@ -1,0 +1,136 @@
+name: Quality Gates
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  quality-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Determine changed files
+        run: |
+          set -euo pipefail
+          BASE_SHA="${{ github.event.pull_request.base.sha }}"
+          HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          echo "Base: $BASE_SHA"
+          echo "Head: $HEAD_SHA"
+          git diff --name-only "$BASE_SHA" "$HEAD_SHA" > changed_files.txt
+
+      - name: Show changed files
+        run: |
+          echo "Changed files:"
+          cat changed_files.txt || true
+
+      - name: Detect skip-tests-gate label
+        id: labels
+        run: |
+          python - <<'PY'
+          import json
+          import os
+
+          with open(os.environ["GITHUB_EVENT_PATH"], "r", encoding="utf-8") as f:
+              event = json.load(f)
+
+          labels = [
+              label.get("name")
+              for label in event.get("pull_request", {}).get("labels", [])
+              if isinstance(label, dict) and label.get("name")
+          ]
+          skip = "skip-tests-gate" in labels
+          print("labels:", labels)
+          print("skip-tests-gate:", skip)
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"skip_tests_gate={'true' if skip else 'false'}\n")
+          PY
+
+      - name: Validate changed specs (strict)
+        run: |
+          set -euo pipefail
+          SPECS="$(grep -E '^specs/.+/spec\.md$' changed_files.txt || true)"
+          if [ -z "$SPECS" ]; then
+            echo "No spec changes."
+            exit 0
+          fi
+          echo "$SPECS" | tr '\n' '\0' | xargs -0 python -B scripts/validate_spec.py --strict
+
+      - name: Validate changed PRDs (non-strict)
+        run: |
+          set -euo pipefail
+          PRDS="$(grep -E '^docs/prd/.*\.md$' changed_files.txt || true)"
+          if [ -z "$PRDS" ]; then
+            echo "No PRD changes."
+            exit 0
+          fi
+          echo "$PRDS" | tr '\n' '\0' | xargs -0 python -B scripts/validate_prd.py
+
+      - name: Validate changed PRDs (strict if Approved)
+        run: |
+          set -euo pipefail
+          PRDS="$(grep -E '^docs/prd/.*\.md$' changed_files.txt || true)"
+          if [ -z "$PRDS" ]; then
+            echo "No PRD changes."
+            exit 0
+          fi
+
+          APPROVED_PRDS="$(
+            python - <<'PY'
+            import re
+            import sys
+            from pathlib import Path
+
+            status_re = re.compile(r"^[*-]\\s+\\*\\*Status\\*\\*:\\s*(.+)\\s*$", re.M)
+
+            approved = []
+            for raw in sys.stdin.read().splitlines():
+              path = raw.strip()
+              if not path:
+                continue
+              p = Path(path)
+              if not p.exists() or not p.is_file():
+                continue
+              text = p.read_text(encoding="utf-8")
+              m = status_re.search(text)
+              if m and "approved" in m.group(1).lower():
+                approved.append(path)
+
+            print("\\n".join(approved))
+            PY
+          ) <<<"$PRDS"
+
+          if [ -z "$APPROVED_PRDS" ]; then
+            echo "No Approved PRDs changed; skipping strict PRD validation."
+            exit 0
+          fi
+
+          echo "$APPROVED_PRDS" | tr '\n' '\0' | xargs -0 python -B scripts/validate_prd.py --strict
+
+      - name: Run validator unit tests
+        run: python -m unittest discover -s tests -p 'test*.py' -q
+
+      - name: Require tests for src changes
+        if: steps.labels.outputs.skip_tests_gate != 'true'
+        run: |
+          set -euo pipefail
+          HAS_SRC="$(grep -c '^src/' changed_files.txt || true)"
+          HAS_TESTS="$(grep -E -c '(\.test\.|\.spec\.|^tests/|/tests/)' changed_files.txt || true)"
+          echo "src changes: $HAS_SRC"
+          echo "test changes: $HAS_TESTS"
+          if [ "$HAS_SRC" -gt 0 ] && [ "$HAS_TESTS" -eq 0 ]; then
+            echo "ERROR: src changed but no tests changed."
+            echo "Add unit/integration/e2e tests or apply label 'skip-tests-gate' with justification in the PR description and Spec Section 7."
+            exit 1
+          fi

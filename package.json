@@ -1,0 +1,22 @@
+{
+  "name": "init-project-template",
+  "version": "1.0.0",
+  "description": "(Optional) Dev tooling configuration for the template.",
+  "scripts": {
+    "init": "pwsh ./scripts/bootstrap-new-project.ps1 || ./scripts/bootstrap-new-project.sh",
+    "setup": "pwsh ./scripts/setup-workspace.ps1 || ./scripts/setup-workspace.sh",
+    "test": "python -m unittest discover -s tests -p \"test*.py\" -q"
+  },
+  "keywords": [
+    "template",
+    "ai-agent",
+    "standardization"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.1"
+  }
+}

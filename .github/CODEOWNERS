@@ -1,0 +1,13 @@
+# This file defines individuals or teams responsible for specific code paths.
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# CUSTOMIZE: Replace @buenhyden with your GitHub user/org/team handles.
+
+# Default owner for everything
+* @buenhyden
+
+# Specific owners for sensitive areas
+/.github/workflows/ @buenhyden
+/agent_settings/ @buenhyden
+/.agent/ @buenhyden
+/scripts/ @buenhyden

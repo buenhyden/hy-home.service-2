@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+.venv/
+vendor/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+
+# Project specific
+agent_settings/
+agent/workflows/
+agent/rules/
+.agent/workflows/
+.agent/rules/
+.history/
+coverage/
+tmp/
